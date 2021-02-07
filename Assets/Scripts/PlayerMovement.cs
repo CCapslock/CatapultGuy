@@ -51,7 +51,6 @@ public class PlayerMovement : MonoBehaviour
 	public RotatingController _rotatingController;
 	public InputController _inputController;
 	private Vector3 _delay;
-	public float AddForceForce;
 	private bool _isFlying;
 	private bool _delayCounted;
 	private void Start()
@@ -68,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
 		}
 	}
 
-	public void ShootGuy()
+	public void ShootGuy(float addForceForce)
 	{
 		_isFlying = true;
 		Arrow.SetActive(false);
@@ -78,6 +77,6 @@ public class PlayerMovement : MonoBehaviour
 		PlayerHips.isKinematic = false;
 		Vector3 shootingVector = DirectionTransformStart.position + DirectionTransformEnd.position;
 		//shootingVector.z *= AddForceForce;
-		PlayerHips.AddForce(shootingVector * AddForceForce);
+		PlayerHips.AddForce(shootingVector * addForceForce);
 	}
 }

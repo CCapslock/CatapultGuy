@@ -6,6 +6,7 @@ public class Obstacle : MonoBehaviour
 	private void Start()
 	{
 		_rb = GetComponent<Rigidbody>();
+		tag = "Obstacle";
 	}
 	private void OnCollisionEnter(Collision other)
 	{
