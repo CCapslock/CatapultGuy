@@ -6,6 +6,7 @@ public class RotatingController : MonoBehaviour
 	public Transform PlayerTransfom;
 	public float RightBorder;
 	public float LeftBorder;
+	public float _slingShotPower;
 
 	private Transform _sligshotTransform;
 	private InputController _inputController;
@@ -14,7 +15,6 @@ public class RotatingController : MonoBehaviour
 	private Vector3 _rotatingVector;
 	private Vector3 _playerPositionVector;
 	private Vector2 _tempRotatingVector;
-	private float _slingShotPower;
 	private bool _delayCounted;
 	private bool _rotationCounted;
 	private bool _slingShotPowerCounted;
@@ -71,7 +71,7 @@ public class RotatingController : MonoBehaviour
 	{
 		if (_inputController.TouchPosition.y < _startPosition.y)
 		{
-			_slingShotPower = (_inputController.TouchPosition.y - _startPosition.y) * -2f * 1000f;
+			_slingShotPower = (_inputController.TouchPosition.y - _startPosition.y) * -2f * 1400f;
 		}
 		else
 		{
