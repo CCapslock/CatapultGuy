@@ -50,20 +50,41 @@ public class PlayerMovement : MonoBehaviour
 	public CameraFollow _cameraFollow;
 	public RotatingController _rotatingController;
 	public InputController _inputController;
+	public LineRenderer LineVisual;
+	public int LineSegments;
+
 	private Vector3 _delay;
+	private Vector3 _startPlayerPosition;
 	private bool _isFlying;
 	private bool _delayCounted;
 	private void Start()
 	{
 		_cameraFollow = FindObjectOfType<CameraFollow>();
+		_inputController = FindObjectOfType<InputController>();
 		_rotatingController = FindObjectOfType<RotatingController>();
 		_cameraFollow.enabled = false;
+		LineVisual = GetComponent<LineRenderer>();
+		LineVisual.positionCount = LineSegments;
 	}
 	private void FixedUpdate()
 	{
 		if (_isFlying)
 		{
 			//todo перемещается в полете
+		}
+		//Vector3 vo = CalculateVelocity(DirectionTransformEnd.position, DirectionTransformStart.position, 2f);
+		//vo.x /= 10f;
+		//Visualise(vo);
+
+		if (!_isFlying)
+		{
+			_startPlayerPosition = PlayerHips.position;
+		}
+
+		Vector3 speed = (DirectionTransformEnd.position - _startPlayerPosition) * (_rotatingController._slingShotPower / 3500f);
+		if (_rotatingController.IsSecondPhase && _inputController.DragingStarted)
+		{
+			ShowTrajectory(_startPlayerPosition, speed);
 		}
 	}
 
@@ -75,8 +96,63 @@ public class PlayerMovement : MonoBehaviour
 		_cameraFollow.enabled = true;
 		_rotatingController.enabled = false;
 		PlayerHips.isKinematic = false;
-		Vector3 shootingVector = DirectionTransformStart.position + DirectionTransformEnd.position;
+		Vector3 shootingVector = DirectionTransformEnd.position - _startPlayerPosition;
 		//shootingVector.z *= AddForceForce;
 		PlayerHips.AddForce(shootingVector * addForceForce);
 	}
+
+	private void ShowTrajectory(Vector3 origin, Vector3 speed)
+	{
+		Vector3[] points = new Vector3[LineSegments];
+		LineVisual.positionCount = points.Length;
+
+		for (int i = 0; i < points.Length; i++)
+		{
+			float time = i * 0.1f;
+
+			points[i] = origin + speed * time + Physics.gravity * time * time / 2;
+		}
+
+		LineVisual.SetPositions(points);
+	}
+
+	/*private void Visualise(Vector3 velocity)
+	{
+		for (int i = 0; i < LineSegments; i++)
+		{
+			LineVisual.SetPosition(i, CalculatePisitionInTime(velocity, i * (float)LineSegments));
+		}
+	}
+
+	private Vector3 CalculateVelocity(Vector3 target, Vector3 origin, float time)
+	{
+		Vector3 distance = target - origin;
+		Vector3 distanceXZ = distance;
+		distanceXZ.y = 0f;
+
+		float sY = distance.y;
+		float sXZ = distanceXZ.magnitude;
+
+
+		float vXZ = sXZ * time;
+		float vY = (sY / time) + (0.5f * Mathf.Abs(Physics.gravity.y) * time);
+
+		Vector3 result = distanceXZ.normalized;
+		result *= vXZ;
+		result.y = vY;
+
+		return result;
+	}
+	private Vector3 CalculatePisitionInTime(Vector3 velocity, float time)
+	{
+		Vector3 velocityXZ = velocity;
+		velocityXZ.y = 0f;
+
+		Vector3 result = DirectionTransformStart.position + velocity * time;
+		float positionY = (-0.5f * Mathf.Abs(Physics.gravity.y) * (time * time)) + (velocity.y * time) + DirectionTransformStart.position.y;
+
+		result.y = positionY;
+
+		return result;
+	}*/
 }

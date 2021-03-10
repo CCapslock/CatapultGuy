@@ -36,6 +36,7 @@ public class Bomb : MonoBehaviour
 			other.attachedRigidbody.AddForce((other.transform.position - transform.position) * BombForce);
 			Debug.Log("boom");
 		}
+		Destroy(this.gameObject);
 	}
 	private void ActivateBomb()
 	{
