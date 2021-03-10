@@ -60,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
 	private void Start()
 	{
 		_cameraFollow = FindObjectOfType<CameraFollow>();
+		_inputController = FindObjectOfType<InputController>();
 		_rotatingController = FindObjectOfType<RotatingController>();
 		_cameraFollow.enabled = false;
 		LineVisual = GetComponent<LineRenderer>();
@@ -81,8 +82,10 @@ public class PlayerMovement : MonoBehaviour
 		}
 
 		Vector3 speed = (DirectionTransformEnd.position - _startPlayerPosition) * (_rotatingController._slingShotPower / 3500f);
-
-		ShowTrajectory(_startPlayerPosition, speed);
+		if (_rotatingController.IsSecondPhase && _inputController.DragingStarted)
+		{
+			ShowTrajectory(_startPlayerPosition, speed);
+		}
 	}
 
 	public void ShootGuy(float addForceForce)
@@ -113,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
 		LineVisual.SetPositions(points);
 	}
 
-	private void Visualise(Vector3 velocity)
+	/*private void Visualise(Vector3 velocity)
 	{
 		for (int i = 0; i < LineSegments; i++)
 		{
@@ -151,5 +154,5 @@ public class PlayerMovement : MonoBehaviour
 		result.y = positionY;
 
 		return result;
-	}
+	}*/
 }

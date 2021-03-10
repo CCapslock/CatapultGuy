@@ -1,5 +1,4 @@
-﻿using Boo.Lang;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RotatingController : MonoBehaviour
 {
@@ -18,7 +17,7 @@ public class RotatingController : MonoBehaviour
 	private bool _delayCounted;
 	private bool _rotationCounted;
 	private bool _slingShotPowerCounted;
-	private bool _isSecondPhase;
+	public bool IsSecondPhase;
 
 	private void Start()
 	{
@@ -41,7 +40,7 @@ public class RotatingController : MonoBehaviour
 
 			_tempRotatingVector.x = (_inputController.TouchPosition.x - _startPosition.x);
 			_tempRotatingVector.y = (_inputController.TouchPosition.y - _startPosition.y);
-			if (!_isSecondPhase)
+			if (!IsSecondPhase)
 			{
 				if (_sligshotTransform.rotation.eulerAngles.y + _tempRotatingVector.x < LeftBorder && _sligshotTransform.rotation.eulerAngles.y + _tempRotatingVector.x > RightBorder)
 				{
@@ -57,11 +56,11 @@ public class RotatingController : MonoBehaviour
 		else
 		{
 			_delayCounted = false;
-			if (_rotationCounted && !_isSecondPhase)
+			if (_rotationCounted && !IsSecondPhase)
 			{
-				_isSecondPhase = true;
+				IsSecondPhase = true;
 			}
-			else if (_slingShotPowerCounted && _isSecondPhase)
+			else if (_slingShotPowerCounted && IsSecondPhase)
 			{
 				_playerMovement.ShootGuy(_slingShotPower);
 			}
