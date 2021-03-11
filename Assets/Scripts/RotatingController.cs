@@ -10,6 +10,7 @@ public class RotatingController : MonoBehaviour
 	private Transform _sligshotTransform;
 	private InputController _inputController;
 	private PlayerMovement _playerMovement;
+	private StringsController _stringsController;
 	private Vector3 _startPosition;
 	private Vector3 _rotatingVector;
 	private Vector3 _playerPositionVector;
@@ -80,8 +81,7 @@ public class RotatingController : MonoBehaviour
 		_playerPositionVector = PlayerTransfom.localPosition;
 		_playerPositionVector.z = 2f + (_slingShotPower * (4f / 10000f));
 		PlayerTransfom.localPosition = _playerPositionVector;
-
-		Debug.Log("_slingShotPower = " + _slingShotPower);
+		//Debug.Log("_slingShotPower = " + _slingShotPower);
 		_slingShotPowerCounted = true;
 	}
 	private void RotateAtSide(Vector2 vector)
